@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Translations extends Model
 {
     use HasFactory;
+    protected $table = 'translations';
+    protected $fillable = ['title','message'];
 }
