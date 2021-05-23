@@ -32,6 +32,6 @@ class StoreUpdatePost extends FormRequest
         return[
             'required'=>'O campo :attribute é obrigatório',
             'min'=>'O tamanho mínimo do :attribute é :min caracteres'
-        ]
+        ];
     }
 }
