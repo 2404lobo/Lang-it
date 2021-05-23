@@ -14,8 +14,8 @@ class TranslationsController extends Controller
     public function new(){
         return view('admin.translations.new');
     }
-    public function store(Request $request){
+    public function store(StoreUpdatePost $request){
         Translations::create($request->all());
-        return "ok";
+        return redirect()->route('translations.index');
     }
 }
