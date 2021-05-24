@@ -12,7 +12,7 @@
         <input type="hidden" name="_method" value="DELETE">
         <button type="submit">Delete</button>        
     </form>
-    <-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=->
+    -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 @endforeach
-
+<br>
 <a href="{{ route('translations.new') }}">Add new</a>

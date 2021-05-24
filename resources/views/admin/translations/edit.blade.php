@@ -1,4 +1,4 @@
-<h1>Change translation {{$post->title}}</h1>
+<h1>Change translation {{$translation->title}}</h1>
 @if ($errors->any())
     <ul>
     @foreach($errors->all() as $error)
@@ -6,9 +6,9 @@
     @endforeach
     </ul>
 @endif
-<form action="{{ route('translations.store', $post->id) }}" method="post">
+<form action="{{ route('translations.store', $translation->id) }}" method="post">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-    <input type="text" name="title" id=title value="{{$post->title}}">
-    <textarea name="message" id="message" cols="25" rows="5">{{$post->message}}</textarea>
+    <input type="text" name="title" id=title value="{{$translation->title}}">
+    <textarea name="message" id="message" cols="25" rows="5">{{$translation->message}}</textarea>
     <button type="submit">Update Request</button>
 </form>

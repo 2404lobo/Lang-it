@@ -13,6 +13,6 @@ Route::get('/translations/new', [TranslationsController::class,'new'])->name('tr
 
 Route::get('/translations/{id}', [TranslationsController::class,'show'])->name('translations.show');
 Route::delete('/translations/{id}', [TranslationsController::class, 'destroy'])->name('translations.destroy');
-Route::put('/translations/{id}' [TranslationsController::class 'update'])->name('translations.update');
+Route::put('/translations/{id}', [TranslationsController::class, 'update'])->name('translations.update');
 
 Route::get('/translations/edit/{id}', [TranslationsController::class, 'edit'])->name('translations.edit');
