@@ -10,5 +10,5 @@
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <input type="text" name="title" id=title value="{{old('title')}}">
     <textarea name="message" id="message" cols="25" rows="5">{{old('message')}}</textarea>
-    <button type="submit">Request</button>
+    <button type="submit">Add New Request</button>
 </form>
