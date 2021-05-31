@@ -1,15 +1,12 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Http\Requests\StoreUpdatePost;
 use App\Models\Translations;
 use Illuminate\Http\Request;
-
 class TranslationsController extends Controller
 {
     public function index(){
-        $translations=Translations::get();
+        $translations=Translations::orderby('title','DESC')->paginate(3);
         return view('admin.translations.index', compact('translations'));
     }
     public function new(){
@@ -45,5 +42,13 @@ class TranslationsController extends Controller
         }
         $translation->update($request->all());
         return redirect()->route('translations.index')->with('messsage','Alterado com sucesso');
+    }
+    public function search(Request $request){
+        $filtro=$request->all();
+        $translations=Translations::where('title','LIKE',"%{$request->filtro}%")
+                                  ->orwhere('message','LIKE',"%{$request->filtro}%")
+                                  ->orderby('title','DESC')
+                                  ->paginate(3);
+        return view('admin.translations.index', compact('translations','filtro'));
     }
 }

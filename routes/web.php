@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\{TranslationsController};
 use Illuminate\Support\Facades\Route;
-
+Route::any('/translations/search', [TranslationsController::class,'search'])->name('translations.search');
 Route::get('/', function(){return view('welcome');});
 Route::post('/');
 
