@@ -16,7 +16,13 @@ class CreateTranslationsTable extends Migration
         Schema::create('translations', function (Blueprint $table) {
             $table->id();
             $table->string('title',100);
-            $table->text('message');
+            $table->text('message')->nullable();
+            $table->datetime('duedate');
+            $table->integer('progress');
+            $table->integer('wordcount');
+            $table->integer('requestedby');
+            $table->unsignedBigInteger('origin language');
+            $table->unsignedBigInteger('final language');
             $table->timestamps();
         });
     }

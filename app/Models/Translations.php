@@ -7,5 +7,5 @@ class Translations extends Model
 {
     use HasFactory;
     protected $table = 'translations';
-    protected $fillable = ['title','message'];
+    protected $fillable = ['title','message','wordcount','requesteby'];
 }
