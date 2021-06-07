@@ -40,9 +40,6 @@
     </nav>
 </header>
 <body>
-    @if($editingtran.isset)
-        #ModalEdit".modal-open;
-    @endif
     <div class="col">
         <div class="container pt-7">
             <div class="row">
@@ -74,7 +71,7 @@
                                 <div class="col py-1" style="font-size:14">{{$translation->requestedby}}</div>
                                 <div class="row-1 mr-3 pt-2">
                                     <div>
-                                        <form method="post" action="{{route(home.edit,$translation->id)}}" method="get">
+                                        <form method="post" action="{{route('home.edit',$translation->id)}}" method="get">
                                             <button type="submit mx-1" class="btn btn-primary btn-sm mr-1">Edit</button>
                                         </form>
                                     </div>
@@ -148,7 +145,7 @@
     <div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="ModalAddNewTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <form action="{{route('home.apply')}}" method="post" id="editTranslation">
+                <form action="{{route('home')}}" method="get" id="editTranslation">
                     @csrf
                     <div class="modal-header pb-1">
                         <h5 class="modal-title" id="ModalNewTitle">Add new Translation</h5>
