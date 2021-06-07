@@ -18,11 +18,12 @@ class CreateTranslationsTable extends Migration
             $table->string('title',100);
             $table->text('message')->nullable();
             $table->datetime('duedate');
-            $table->integer('progress');
-            $table->integer('wordcount');
-            $table->integer('requestedby');
-            $table->unsignedBigInteger('origin language');
-            $table->unsignedBigInteger('final language');
+            $table->integer('progress')->nullable();
+            $table->integer('wordcount')->nullable();
+            $table->unsignedBigInteger('translatorid');
+            $table->unsignedBigInteger('requestedby')->nullable();
+            $table->unsignedBigInteger('originlanguage');
+            $table->unsignedBigInteger('finallanguage');
             $table->timestamps();
         });
     }
