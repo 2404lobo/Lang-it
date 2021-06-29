@@ -8,20 +8,19 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/',[HomeController::class,'redirect'])->name('redirect');
-
+/*
 Route::post('/translations', [TranslationsController::class,'store'])->name('translations.store');
 Route::get('/translations/new', [TranslationsController::class,'new'])->name('translations.new');
-Route::get('/translations/{id}', [TranslationsController::class,'show'])->name('translations.show');
-Route::delete('/translations/{id}', [TranslationsController::class, 'destroy'])->name('translations.destroy');
-Route::put('/translations/{id}', [TranslationsController::class, 'update'])->name('translations.update');
-Route::get('/translations/edit/{id}', [TranslationsController::class, 'edit'])->name('translations.a');
+Route::get('/translations', [TranslationsController::class, 'edit'])->name('translations.edit');
+Route::put('/translations', [TranslationsController::class, 'update'])->name('translations.update');
+Route::delete('/translations', [TranslationsController::class, 'destroy'])->name('translations.destroy');
 Route::any('/translations/search', [TranslationsController::class,'search'])->name('translations.search');
-
+*/
 Route::get('/home',[HomeController::class,'index'])->name('home');
 Route::post('/home',[HomeController::class,'new'])->name('home.new');
-Route::post('/home/{id}',[HomeController::class,'edit'])->name('home.edit');
-Route::put('/home/{id}',[HomeController::class,'apply'])->name('home.apply');
-Route::delete('/home/{id}',[HomeController::class,'delete'])->name('home.delete');
+Route::get('/home/{id}',[HomeController::class,'edit'])->name('home.edit');
+Route::put('/home/{id}',[HomeController::class,'update'])->name('home.update');
+Route::delete('/home/{id}',[HomeController::class,'destroy'])->name('home.destroy');
 
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('user', 'App\Http\Controllers\UserController', ['except' => ['show']]);
@@ -33,4 +32,3 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('table-list', function () {return view('pages.tables');})->name('table');
 	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'App\Http\Controllers\ProfileController@password']);
 });
-

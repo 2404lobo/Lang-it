@@ -22,17 +22,17 @@ class HomeController extends Controller
                         ->leftjoin('languages as lang1','translations.originlanguage','=','lang1.id')
                         ->leftjoin('languages as lang2','translations.finallanguage','=','lang2.id')
                         ->where('translatorid',Auth::id())
-                        ->select('translations.id as id',
-                                 'translations.title as title',
-                                 'translations.message',
+                        ->select('translations.id',
+                                 'translations.title',
+                                 'lang1.id as lang1id',
                                  'lang1.shortname as lang1',
+                                 'lang2.id as lang2id',
                                  'lang2.shortname as lang2',
-                                 'translations.progress', 
-                                 'translations.wordcount', 
+                                 'translations.progress',
+                                 'translations.wordcount',
                                  'translations.duedate',
                                  'ustr.id as translator',
                                  'uscl.name as requestedby')->get();
-        $trans=Translations::all();
         $langs=Languages::all();
         return view('dashboard', compact('translations','langs'));
     }
@@ -41,18 +41,24 @@ class HomeController extends Controller
         return redirect()->route('home');
     }
     public function edit($id){
-        $translation=Translations::find($id);
+        $translation = Translations::find($id);
         if(!$translation){
             return redirect()->route('home');
         }
-        return $ModalEdit.modal('show');
+        $langs=Languages::all();
+        return view('edit',compact('translation','langs'));
     }
-    public function apply(StoreTranslation $request,$id){
+    public function update(StoreTranslation $request, $id){
         $translation = Translations::find($id);
         if(!$translation){
             return redirect()->back();
         }
         $translation->update($request->all());
+        return redirect()->route('home');
+    }
+    public function destroy($id){
+        $translation=Translations::find($id);
+        $translation->delete();
         return redirect()->route('home');
     }
 }

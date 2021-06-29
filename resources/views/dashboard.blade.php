@@ -23,7 +23,7 @@
                     <a class="nav-link" href="#">Translations<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Orders</a>
+                    <a class="nav-link" href="#">Past Translations  </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Settings</a>
@@ -41,7 +41,7 @@
 </header>
 <body>
     <div class="col">
-        <div class="container pt-7">
+        <div class="container mt-5">
             <div class="row">
                 <div class="col-8">
                     <div class="container py-3" style="background-color: #f7b32b">
@@ -51,33 +51,41 @@
                         </div>
                     </div>
                     <div class="container py-1 mx-auto" style="width:100%;background-color: #ffde9c">
-                        <div class="row align-items-center">
-                            <div class="col-4 py-1">Title</div>
-                            <div class="col-2 pl-3 py-1">Languages</div>
-                            <div class="col-1 pl-0 py-1">Progress</div>
-                            <div class="col-1 py-1">Due</div>
-                            <div class="col py-1">Requested by</div>
-                        </div>
-                        @foreach($translations as $translation)
-                            <div class="row align-items-center">
-                                <div class="col-4 py-1" style="font-size:14">{{$translation->title}}</div>
-                                <div class="col-2 py-1" style="font-size:14">
-                                    <div class="row">
-                                        {{$translation->lang1}} to {{$translation->lang2}}
-                                    </div>
-                                </div>
-                                <div class="col-1 py-1" style="font-size:14">{{($translation->progress/$translation->wordcount)*100}}%</div>
-                                <div class="col-1 py-1" style="font-size:14">{{substr($translation->duedate,8,2)}}/{{substr($translation->duedate,5,2)}}</div>
-                                <div class="col py-1" style="font-size:14">{{$translation->requestedby}}</div>
-                                <div class="row-1 mr-3 pt-2">
-                                    <div>
-                                        <form method="post" action="{{route('home.edit',$translation->id)}}" method="get">
-                                            <button type="submit mx-1" class="btn btn-primary btn-sm mr-1">Edit</button>
+                        <table class="table table-sm borderless">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="text-left">Title</th>
+                                    <th scope="col" class="text-center">Languages</th>
+                                    <th scope="col" class="text-center">Progress</th>
+                                    <th scope="col" class="text-center">Due</th>
+                                    <th scope="col" class="text-left">Requested by</th>
+                                    <th scope="col" class="text-center"></th>
+                                    <th scope="col" class="text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($translations as $translation)
+                                <tr>
+                                    <td style="display:none;">{{$translation->id}}</td>
+                                    <td class="text-left align-middle">{{$translation->title}}</td>
+                                    <td class="text-center align-middle">{{$translation->lang1}} to {{$translation->lang2}}</td>
+                                    <td class="text-center align-middle">{{substr((($translation->progress/$translation->wordcount)*100),0,5)}}%</td>
+                                    <td class="text-center align-middle">{{substr($translation->duedate,8,2)}}/{{substr($translation->duedate,5,2)}}</td>
+                                    <td class="text-left align-middle">{{$translation->requestedby}}</td>
+                                    <td class="text-center" class="py-1">
+                                        <a href="{{route('home.edit',$translation->id)}}"><button type="button" class="btn btn-primary btn-sm mr-1">Edit</button></a>
+                                    </td>
+                                    <td class="text-center" class="py-1">
+                                        <form class="my-0 py-0" action="{{route('home.destroy',$translation->id)}}" method="post">
+                                            @csrf
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <button type="submit" class="btn btn-danger btn-sm mr-1">Delete</button>        
                                         </form>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="col-4">
@@ -88,7 +96,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="ModalAddNew" tabindex="-1" role="dialog" aria-labelledby="ModalAddNewTitle" aria-hidden="true">
+    <div class="modal fade" id="ModalAddNew" tabindex="-1" role="dialog" aria-labelledby="ModalNew" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <form action="{{route('home.new')}}" method="post" id="newTranslation">
@@ -100,8 +108,8 @@
                         </button>
                     </div>
                     <div class="modal-body pt-1">
-                        <input type="text" class="form-control" id="title" name="title" placeholder="Title">
-                        <div class="row">
+                        <input type="text my-1" class="form-control" id="title" name="title" placeholder="Title">
+                        <div class="row my-1">
                             <div class="col">
                                 <select class="form-control" id="originlanguage" name="originlanguage">
                                     @foreach($langs as $language)
@@ -113,14 +121,14 @@
                                 to
                             </div>
                             <div class="col">
-                                <select class="form-control" is="finallanguage" name="finallanguage">
+                                <select class="form-control" id="finallanguage" name="finallanguage">
                                     @foreach($langs as $language)
                                     <option value="{{$language->id}}">{{$language->shortname}} - {{$language->fullname}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row my-1">
                             <div class="col">
                                 <input type="number" class="form-control" id="wordcount" name="wordcount" placeholder="Wordcount">
                             </div>
@@ -133,7 +141,7 @@
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Create</button>
                     </div>
-                    <input type="hidden" name="requestedby" value="{{auth()->id()}}">
+                    <input type="hidden" name="requestedby" value="0">
                     <input type="hidden" name="translatorid" value="{{auth()->id()}}">
                     <input type="hidden" name="progress" value=0>
                     <input type="hidden" name="created_at" value="{{now()}}">
@@ -142,22 +150,45 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="ModalAddNewTitle" aria-hidden="true">
+    {{--
+    <div class="modal fade" id="ModalDelete" tabindex="-1" role="dialog" aria-labelledby="ModalDelete" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <form action="{{route('home')}}" method="get" id="editTranslation">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Translation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure about this?</p>
+                </div>
+                <div class="modal-footer">
+                    <form action="{{route('home.delete', $translation->id)}}" method="post">
+                        @csrf
+                        <button type="submit" class="btn btn-danger">Yes, delete it</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No, cancel it</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="ModalEdit" aria-hidden="true">\
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form action="{{route('home')}}" method="get" id="editTranslationForm">
                     @csrf
                     <div class="modal-header pb-1">
-                        <h5 class="modal-title" id="ModalNewTitle">Add new Translation</h5>
+                        <h5 class="modal-title" id="ModalEditTitle">Edit Translation</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                            <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body pt-1">
-                        <input type="text" class="form-control" id="title" name="title" placeholder="Title">
-                        <div class="row">
+                        <input type="text my-1" class="form-control" id="title" name="title" placeholder="Title">
+                        <div class="row my-1">
                             <div class="col">
-                                <select class="form-control" id="originlanguage" name="originlanguage">
+                                <select class="form-control" id="originlanguage" name="originlanguage" value="OriginLanguage">
                                     @foreach($langs as $language)
                                     <option value="{{$language->id}}">{{$language->shortname}} - {{$language->fullname}}</option>
                                     @endforeach
@@ -167,33 +198,53 @@
                                 to
                             </div>
                             <div class="col">
-                                <select class="form-control" is="finallanguage" name="finallanguage">
+                                <select class="form-control" is="finallanguage" name="finallanguage" value="FinalLanguage">
                                     @foreach($langs as $language)
                                     <option value="{{$language->id}}">{{$language->shortname}} - {{$language->fullname}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row my-1">
                             <div class="col">
-                                <input type="number" class="form-control" id="wordcount" name="wordcount" placeholder="Wordcount">
+                                <input type="number" class="form-control" id="progress" name="progress" placeholder="Progress">    
                             </div>
                             <div class="col">
-                                <input class="form-control" type="date" name="duedate" id="duedate">
+                                <input type="number" class="form-control" id="wordcount" name="wordcount" placeholder="Wordcount">    
                             </div>
+                        </div>
+                        <div class="row my-1">
+                            <input class="form-control mx-3" type="date" name="duedate" id="duedate">
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Create</button>
                     </div>
-                    <input type="hidden" name="requestedby" value="{{auth()->id()}}">
-                    <input type="hidden" name="translatorid" value="{{auth()->id()}}">
-                    <input type="hidden" name="progress" value=0>
-                    <input type="hidden" name="created_at" value="{{now()}}">
                     <input type="hidden" name="updated_at" value="{{now()}}">
                 </form>
             </div>
         </div>
     </div>
+    --}}
 </body>
+{{--
+<script>
+$(document).ready(function () {
+    $('.editTranslation').on('click',function(e){
+        $('#ModalEdit').modal('show');
+        $tr = $(this).closest('tr');
+        $data=$tr.children('td').map(function(){
+            return $(this).text();
+        }).get();
+
+        $('#title').val("{{$translations[$data[0]]->title}}");
+        $('#originlanguage').val({{$translations[$data[0]]->lang1id}});
+        $('#finallanguage').val({{$translations[$data[0]]->lang2id}});
+        $('#progress').val({{$translations[$data[0]]->progress}});
+        $('#wordcount').val({{$translations[$data[0]]->wordcount}});
+        $('#duedate').val("{{$translations[$data[0]]->duedate}}");
+    });
+})
+</script>
+--}}
